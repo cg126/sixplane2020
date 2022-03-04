@@ -33,11 +33,11 @@ void main()
 	string path, name, name1;
 
 	// 定义OpenCV的Mat对象
-	Mat src, src1;
+	Mat src1, src2;
 	Mat outImage;
 	Mat drone_pos;
 	Mat diff_result;
-	for (int a = 1; a < 2; a++)//while (!stop)	?
+	for (int a = 1; a < 2; a++)
 	{
 		double t1 = (double)cvGetTickCount();//计时
 		/*frameNum++;
@@ -57,20 +57,20 @@ void main()
 		if (a == 1)
 		{
 			// 对输入图像重命名
-			src = imread(name);
-			src1 = imread(name1);
-			imwrite(".\\新数据中间结果\\pic1.jpg", src);
-			imwrite(".\\新数据中间结果\\pic2.jpg", src1);
+			src1 = imread(name);
+			src2 = imread(name1);
+			imwrite(".\\新数据中间结果\\pic1.jpg", src1);
+			imwrite(".\\新数据中间结果\\pic2.jpg", src2);
 			outImage = imread(name);
-			drone_pos = src;
+			drone_pos = src1;	// 
 		}
 
 
-		if (a == 2 || a == 3)
+		/*if (a == 2 || a == 3)
 		{
 			src = imread(name);
 			outImage = outImage;
-		}
+		}*/
 
 		//imshow("1", src);
 		//waitKey(0);
@@ -78,8 +78,8 @@ void main()
 		int i, j;
 		int greyaverage = 0;
 		int greyaverage1 = 0;  //计算背景平均灰度
-		int width = src.cols;	// 列数等于宽
-		int height = src.rows;	// 行数等于高
+		int width = src1.cols;	// 列数等于宽
+		int height = src1.rows;	// 行数等于高
 
 		//?
 		unsigned char *img0 = (unsigned char  *)malloc(width * height * sizeof(unsigned char));	// 使指针img0指向一块已分配的内存；sizeof()返回数据类型大小
@@ -87,13 +87,13 @@ void main()
 
 		Mat greyFrame;
 
-		cvtColor(src, greyFrame, CV_BGR2GRAY);
+		cvtColor(src1, greyFrame, CV_BGR2GRAY);
 
-		//两帧相减 得出无人机运动目标
+		//处理第一组图像：两帧相减 得出无人机运动目标
 		if (a == 1)
 		{
 			diff_result.create(greyFrame.size(), greyFrame.type());
-			Diff2frame(src, src1, diff_result);
+			Diff2frame(src1, src2, diff_result);
 			imwrite(".\\新数据中间结果\\帧间差分结果.jpg", diff_result);
 
 			for (int i = 0; i < height; i++)
