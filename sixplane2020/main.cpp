@@ -54,9 +54,9 @@ void main()
 		//name1 = "C:\\Users\\Axis\\Desktop\\2021下半年无人机论文修改\\无人机新数据\\0902两四旋翼数据\\图像数据\\FLIR0356(png)\\2318.png";//".\\新数据\\785.jpg";
 
 
+		// 将输入图像存入指定地址，并重命名
 		if (a == 1)
 		{
-			// 对输入图像重命名
 			src1 = imread(name);
 			src2 = imread(name1);
 			imwrite(".\\新数据中间结果\\pic1.jpg", src1);
@@ -74,28 +74,31 @@ void main()
 
 		//imshow("1", src);
 		//waitKey(0);
-		int centerx = 0, centery = 0;
+
+		int centerx = 0, centery = 0;	// 声明矩形框中心点横纵坐标
 		int i, j;
 		int greyaverage = 0;
-		int greyaverage1 = 0;  //计算背景平均灰度
+		int greyaverage1 = 0;	//计算背景平均灰度
 		int width = src1.cols;	// 计算src1每行的像素数（即src1有多少列）
 		int height = src1.rows;	// 计算src1每列的像素数（即src1有多少行）
 
-		//?
+		// ?
 		unsigned char *img0 = (unsigned char  *)malloc(width * height * sizeof(unsigned char));	// 使指针img0指向一块已分配的内存；sizeof()返回数据类型大小
 		unsigned char *img00 = (unsigned char  *)malloc(width * height * sizeof(unsigned char));
 
 		Mat greyFrame;
 
-		cvtColor(src1, greyFrame, CV_BGR2GRAY);		// 颜色空间转换函数
+		cvtColor(src1, greyFrame, CV_BGR2GRAY);		// ？
 
-		//处理第一组图像：两帧相减 得出无人机运动目标
+
+		// 1. 帧间差分
 		if (a == 1)
 		{
 			diff_result.create(greyFrame.size(), greyFrame.type());		// 创建一个和greyFrame同等size、同等type的空白图像？
 			Diff2frame(src1, src2, diff_result);
 			imwrite(".\\新数据中间结果\\帧间差分结果.jpg", diff_result);
 
+			// ？
 			for (int i = 0; i < height; i++)
 				for (int j = 0; j < width; j++)
 				{
@@ -143,6 +146,8 @@ void main()
 		//}
 		
 
+
+		// 2. 矩形框和中心点标定
 		//对单目标重新投影
 		for (int i = 0; i < height; i++)
 			for (int j = 0; j < width; j++)
@@ -198,7 +203,7 @@ void main()
 
 		Mat image2;
 
-		cvtColor(greyFrame, image2, CV_GRAY2RGB);
+		cvtColor(greyFrame, image2, CV_GRAY2RGB);	// ???
 
 
 		//标记中心点
