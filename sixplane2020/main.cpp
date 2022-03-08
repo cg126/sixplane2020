@@ -62,7 +62,7 @@ void main()
 			imwrite(".\\新数据中间结果\\pic1.jpg", src1);
 			imwrite(".\\新数据中间结果\\pic2.jpg", src2);
 			outImage = imread(name);
-			drone_pos = src1;	// 
+			drone_pos = src1;	// ?
 		}
 
 
@@ -78,8 +78,8 @@ void main()
 		int i, j;
 		int greyaverage = 0;
 		int greyaverage1 = 0;  //计算背景平均灰度
-		int width = src1.cols;	// 列数等于宽
-		int height = src1.rows;	// 行数等于高
+		int width = src1.cols;	// 计算src1每行的像素数（即src1有多少列）
+		int height = src1.rows;	// 计算src1每列的像素数（即src1有多少行）
 
 		//?
 		unsigned char *img0 = (unsigned char  *)malloc(width * height * sizeof(unsigned char));	// 使指针img0指向一块已分配的内存；sizeof()返回数据类型大小
@@ -87,12 +87,12 @@ void main()
 
 		Mat greyFrame;
 
-		cvtColor(src1, greyFrame, CV_BGR2GRAY);
+		cvtColor(src1, greyFrame, CV_BGR2GRAY);		// 颜色空间转换函数
 
 		//处理第一组图像：两帧相减 得出无人机运动目标
 		if (a == 1)
 		{
-			diff_result.create(greyFrame.size(), greyFrame.type());
+			diff_result.create(greyFrame.size(), greyFrame.type());		// 创建一个和greyFrame同等size、同等type的空白图像？
 			Diff2frame(src1, src2, diff_result);
 			imwrite(".\\新数据中间结果\\帧间差分结果.jpg", diff_result);
 
@@ -149,14 +149,14 @@ void main()
 			{
 				img00[i*width + j] = diff_temp.at<uchar>(i, j);
 			}
-		vector<int> Single_RowPos, Single_ColPos;
+		vector<int> Single_RowPos, Single_ColPos;		// 用两个向量分别记录行、列投影时像素出现的范围
 		FindSingleTarget(img00, height, width, Single_RowPos, Single_ColPos);  //centerx是col号  ， centery是row号
 
 		int boxcenterx, boxcentery;
 		//单目标边界定位
 		//col
-		x11 = Single_ColPos.front();
-		x22 = Single_ColPos.back();
+		x11 = Single_ColPos.front();	// Single_ColPos.front()记录了第一次出现像素的列序号，即无人机最左边像素的横坐标
+		x22 = Single_ColPos.back();		// 类比上句，即无人机最右边像素的横坐标
 
 		//row
 		y11 = Single_RowPos.front();

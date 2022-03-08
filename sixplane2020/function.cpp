@@ -110,7 +110,7 @@ void Diff2frame(Mat &mat1, Mat &mat2, Mat &result)
 	cvtColor(mat2, greyFrame2, CV_BGR2GRAY);
 	tempresult.create(greyFrame1.size(), greyFrame1.type());
 
-	absdiff(greyFrame1, greyFrame2, result);	// per-element absolute difference
+	absdiff(greyFrame1, greyFrame2, result);	// per-element absolute difference 两幅图像作差
 
 	imwrite(".\\新数据中间结果\\帧间差分原始结果.jpg", result);
 
@@ -131,7 +131,7 @@ void Diff2frame(Mat &mat1, Mat &mat2, Mat &result)
 
 
 	double greySum = 0, greyAverage = 0;	// greysum: 图像每个像素点的总灰度值
-	//归一化 (归一化的作用是什么？）
+	//归一化 (归一化的作用是什么：等比放大图像像素灰度值？）
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
 		{
@@ -162,7 +162,7 @@ void Diff2frame(Mat &mat1, Mat &mat2, Mat &result)
 	imwrite(".\\新数据中间结果\\归一化二值结果.jpg", result);
 
 
-	ConnectDenoize2(result, height, width, 5);
+	ConnectDenoize2(result, height, width, 5);		// 连通域去噪
 
 	imwrite(".\\新数据中间结果\\帧间差分结果.jpg", result);
 
