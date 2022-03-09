@@ -268,7 +268,7 @@ void main()
 		imwrite(".\\新数据中间结果\\多目标定位图.png", drone_pos);*/
 
 
-		int **t = new int*[360 / ergodic];
+		int **t = new int*[360 / ergodic];		// ?
 
 		int roi = floor(sqrt(boxwidth * boxwidth + boxheight * boxheight)) / 2 ;
 
@@ -385,7 +385,7 @@ void main()
 
 
 		/////////////////////极坐标图像分割，存入img1///////////////////
-		Mat img1;
+		Mat img1;		// 存储极坐标图像的二值化结果
 		img1.create(imgg.size(), imgg.type());
 
 		int thre = 0;
@@ -411,7 +411,8 @@ void main()
 		//Canny(img1,img1,9,3);
 		//img1 = imread("result.bmp", 0);
 		/////////////边缘提取(边缘信息存入m数组里，前后各扩充20个数据，方便后续处理数据)//////////////
-		Mat img2;
+		
+		Mat img2;		// ？
 		img2.create(imgg.size(), imgg.type());
 		for (int th = 0; th < 360 / ergodic; th = th++)
 		{
@@ -433,7 +434,7 @@ void main()
 		}
 		////////////////////////边缘提取///////////////////////////////
 
-		Mat img22;
+		Mat img22;		// 存储向上遍历，找到边界后的图像
 		img22.create(imgg.size(), imgg.type());
 		for (int i = 0; i < 360 / ergodic; i++)
 		{
@@ -450,6 +451,7 @@ void main()
 		}
 
 		imwrite(".\\新数据中间结果\\极坐标各角度对应边界.jpg", img22);
+
 
 		//...还原各角度对应边界的原像素坐标
 		vector<int> y_pixel;
